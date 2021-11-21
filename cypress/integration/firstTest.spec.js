@@ -42,5 +42,38 @@ describe("Our first test suite", () => {
       // the most recommended way to get an element according to Cypress docs. We should add our own tags
       cy.get('[data-cy="imputEmail1"]');
     });
+
+    it.only("Our second test case", () => {
+      cy.visit("/");
+      // Go to the forms page by navigating on the sidebar menu
+      cy.contains("Forms").click();
+      cy.contains("Form Layouts").click();
+
+      cy.get('[data-cy="signInButton"]');
+
+      // By using contains, if there are more than two elements with the same text, it will return the first one.
+      cy.contains("Sign in");
+
+      // To find another element with the same text, we have to add a second parameter. The first one has to be a locator, the second one the text itself
+      cy.contains('[status="warning"]', "Sign in");
+
+      // If we don't have an unique selector or id, we can locate an unique element that's placed on the same level and then travel to its parent.
+      cy.get("#inputEmail3")
+        .parents("form")
+        .find("button")
+        .should("contain", "Sign in");
+
+      // If we don't have an unique selector or id, we can locate an unique element that's placed on the same level and then travel to its parent.
+      cy.get("#inputEmail3")
+        .parents("form")
+        .find("button")
+        .should("contain", "Sign in")
+        .parents("form")
+        .find("nb-checkbox")
+        .click();
+
+      // Third way to find an element
+      cy.contains("nb-card", "Horizontal form").find('[type="email"]');
+    });
   });
 });
